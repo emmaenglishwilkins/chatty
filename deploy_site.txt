@@ -1,0 +1,7 @@
+cd monday_430
+git checkout --orphan gh-pages
+git rm -rf .
+mv static_site/* .
+git add .
+git commit -m "Deploy static site"
+git push origin gh-pages
