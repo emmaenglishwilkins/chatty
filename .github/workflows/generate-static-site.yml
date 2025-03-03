@@ -27,12 +27,13 @@ jobs:
         run: |
           python app.py  # generate the static site
 
+      
       - name: Commit and push generated static files
         run: |
           git config --global user.name "emmaenglishwilkins"
           git config --global user.email "emmawilkins@penguincodingschool.com"
           git add static_site/
-          git commit -m "Regenerate static site"
-          git push
+          git diff --cached --quiet || (git commit -m "Regenerate static site" && git pull --rebase && git push origin main)
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Automatically set for authentication
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
