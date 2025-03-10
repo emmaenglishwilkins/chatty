@@ -1,16 +1,17 @@
-from flask import Flask, render_template
-import os
+from flask import Flask, render_template, request
+from chatbot import chatbot_response 
 
 app = Flask(__name__)
 
-# Ensure the output directory exists
-output_dir = "static_site"
-os.makedirs(output_dir, exist_ok=True)
+@app.route("/")
+def home():
+	return render_template("index.html")
 
-# Use the application context to render the template
-with app.app_context():
-    html = render_template("index.html")
-    with open(os.path.join(output_dir, "index.html"), "w") as f:
-        f.write(html)
+@app.route("/", methods=['POST'])
+def botresponse():
+    userInput = request.form['msg']
+    chatResponse = chatbot_response(userInput)
+    return render_template("index.html", data=userInput,data2=chatResponse)
 
-print(f"✅ Static site generated at {output_dir}/index.html")
+if __name__ == '__main__':
+	app.run()
