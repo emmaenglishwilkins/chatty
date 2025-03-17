@@ -11,7 +11,7 @@ c = conn.cursor()
 
 '''
 
-def chatbot_response(userinput):
+def chatbot_response(state, userInput):
     flag = True
     while flag:
         sentence = userinput
