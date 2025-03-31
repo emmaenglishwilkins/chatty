@@ -9,18 +9,22 @@
         <h2>Completed basic html file (index.html)</h2>
         <h2>Automatic Deployment of static web page (app.py)</h2>
 
-        <p>next step is to set up config for chatbot</p>
+        <p>Next step is to set up config for chatbot</p>
 
-        <h1>Chatty</h1>
+        <h1>Chatty with the AI Bot</h1>
 
         <form method="post">
-            <input type="text" name="msg">
-            <input type="submit">
-
+            <label for="msg">Your Message:</label>
+            <input type="text" name="msg" id="msg" required>
+            <button type="submit">Send</button>
         </form>
 
-        <p>{{ data }}</p>
-        <p>{{ data2 }}</p>
-
+        {% if data %}
+            <p><strong>You:</strong> {{ data }}</p>
+        {% endif %}
+        
+        {% if data2 %}
+            <p><strong>Bot:</strong> {{ data2 }}</p>
+        {% endif %}
     </body>
 </html>
