@@ -16,26 +16,35 @@ tokenizer = GPT2Tokenizer.from_pretrained(model_name)
 model.eval()
 
 def ai_response(state, userInput): 
-    inputs = tokenizer.encode(userInput + tokenizer.eos_token, return_tensors="pt")
-    response = model.generate(
+    prompt = f"User: {userInput}\nBot:"
+    inputs = tokenizer.encode(prompt, return_tensors="pt")
+    outputs = model.generate(
         inputs, 
         max_length=100, 
         num_return_sequences=1, 
         pad_token_id=tokenizer.eos_token_id
     )
-    chat_response = tokenizer.decode(response[0], skip_special_tokens=True)
+    response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    if "Bot:" in response:
+        chat_response = response.split("Bot:")[1].strip()
     state += 1
     return state, chat_response
 
 def chatbot_response(state, userInput):
     flag = True
     while flag:
-        sentence = userinput
+        sentence = userInput
         if sentence == "":
             return ("bye!")
             flag = False
+        elif "hello" in sentence.lower():
+            return "Hi there!"
+        elif "bye" in sentence.lower():
+            return "Goodbye!"
+            flag = False
         else: 
-            return("ur mom")
+            state, response = ai_response(state, sentence)
+            return response
         '''
         elif check_for_greeting(sentence):
             return check_for_greeting(sentence)
@@ -48,5 +57,16 @@ def chatbot_response(state, userInput):
         else:
             return "Sorry I don't know what you are saying."
         '''
+def main(): 
+    state = 0
+    while True:
+        userInput = input("You: ")
+        if userInput.lower() == "exit":
+            print("Exiting the chatbot. Goodbye!")
+            break
+    
+        state, response = ai_response(state, userInput)
+        print("Chatbot:", response)
+
 if __name__ == '__main__':
 	main()
